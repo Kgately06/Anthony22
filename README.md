@@ -42,4 +42,3 @@ Simply open the `index.html` file in any modern web browser to view and interact
 Made with love by Kait ❤️
 
 You can copy this entire text and replace the contents of your README.md file with it. The formatting should be preserved when you paste it into your file.
-
