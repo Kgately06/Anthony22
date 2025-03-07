@@ -6,12 +6,20 @@
     --background-color: #f5f5f5;
     --text-color: #333333;
     --shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    --vh: 1vh;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    font-size: 62.5%; /* 10px base for easier rem calculations */
+    width: 100%;
+    height: 100%;
 }
 
 body {
@@ -21,57 +29,72 @@ body {
     background-image: radial-gradient(circle at top right, rgba(248, 187, 208, 0.2), transparent 70%),
                      radial-gradient(circle at bottom left, rgba(216, 27, 96, 0.1), transparent 70%);
     background-attachment: fixed;
-    min-height: 100vh;
+    min-height: 100vh; /* Fallback */
+    min-height: calc(var(--vh, 1vh) * 100);
     display: flex;
     flex-direction: column;
+    font-size: 1.6rem;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .container {
-    max-width: 100%;
+    width: 100%;
+    max-width: 1800px;
     margin: 0 auto;
-    padding: 40px;
+    padding: 20px;
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header Styles */
 header {
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 30px;
+    width: 100%;
 }
 
 #main-title {
     color: var(--primary-color);
     font-family: 'Playfair Display', serif;
-    font-size: 4.5rem;
-    margin-bottom: 30px;
+    font-size: 3.5rem;
+    margin-bottom: 15px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
+    display: block;
 }
 
 .subtitle {
     color: var(--text-color);
-    font-size: 2.2rem;
-    margin-bottom: 40px;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
     font-style: italic;
+    padding: 0 10px;
+    word-wrap: break-word;
+    line-height: 1.4;
 }
 
 /* Memory Grid */
 .memory-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 60px;
-    margin: 40px auto;
-    max-width: 90%;
+    gap: 30px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
 }
 
 /* Flip Card Styles */
 .flip-card {
     background-color: transparent;
     width: 100%;
-    aspect-ratio: 3 / 4;
+    height: 400px; /* Fixed height instead of aspect ratio */
     perspective: 2500px;
     cursor: pointer;
-    margin: 0 auto;
-    max-width: 95%;
+    margin: 0 auto 20px;
+    max-width: 450px;
+    touch-action: manipulation;
 }
 
 .flip-card-inner {
@@ -82,7 +105,7 @@ header {
     transition: transform 1.2s;
     transform-style: preserve-3d;
     box-shadow: var(--shadow);
-    border-radius: 25px;
+    border-radius: 20px;
 }
 
 .flip-card.flipped .flip-card-inner {
@@ -95,7 +118,7 @@ header {
     height: 100%;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    border-radius: 25px;
+    border-radius: 20px;
     overflow: hidden;
 }
 
@@ -108,7 +131,7 @@ header {
     height: 100%;
     object-fit: cover;
     object-position: center;
-    border-radius: 20px;
+    border-radius: 18px;
 }
 
 .flip-card-back {
@@ -119,75 +142,89 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px;
-    border: 4px solid var(--primary-color);
+    padding: 25px 20px;
+    border: 3px solid var(--primary-color);
+    overflow-y: auto;
 }
 
 .flip-card-back h3 {
     color: var(--primary-color);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
+    font-size: 2rem;
+    word-wrap: break-word;
+    width: 100%;
 }
 
 .flip-card-back p {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     line-height: 1.4;
-    max-width: 95%;
+    max-width: 100%;
+    word-wrap: break-word;
+    width: 100%;
 }
 
 /* Footer */
 footer {
     text-align: center;
-    padding: 30px;
-    margin-top: 80px;
+    padding: 20px;
+    margin-top: 20px;
     color: var(--text-color);
     font-size: 1.2rem;
     border-top: 1px solid rgba(44, 62, 80, 0.1);
+    width: 100%;
 }
 
-/* Responsive Design */
-@media (max-width: 2100px) {
+/* Responsive Design - Simplified */
+@media (max-width: 900px) {
     .memory-grid {
-        max-width: 98%;
-    }
-}
-
-@media (max-width: 1600px) {
-    .memory-grid {
-        max-width: 95%;
-    }
-    
-    .flip-card-back {
-        padding: 60px;
-    }
-    
-    .flip-card-back h3 {
-        font-size: 2.1rem;
-    }
-    
-    .flip-card-back p {
-        font-size: 1.5rem;
-    }
-}
-
-@media (max-width: 1200px) {
-    .memory-grid {
-        max-width: 95%;
-        gap: 40px;
+        grid-template-columns: 1fr;
+        max-width: 450px;
     }
     
     #main-title {
-        font-size: 3.5rem;
+        font-size: 3rem;
+    }
+    
+    .subtitle {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+    
+    header {
+        margin-bottom: 20px;
+    }
+    
+    .memory-grid {
+        gap: 20px;
+    }
+    
+    #main-title {
+        font-size: 2.8rem;
+        margin-bottom: 10px;
+    }
+    
+    .subtitle {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+    }
+    
+    .flip-card {
+        height: 350px;
+        margin-bottom: 15px;
     }
     
     .flip-card-back {
-        padding: 50px;
+        padding: 20px 15px;
     }
     
     .flip-card-back h3 {
         font-size: 1.8rem;
-        margin-bottom: 30px;
     }
     
     .flip-card-back p {
@@ -195,51 +232,56 @@ footer {
     }
 }
 
-@media (max-width: 900px) {
-    .memory-grid {
-        grid-template-columns: 1fr;
-        max-width: 90%;
-        gap: 50px;
+@media (max-width: 400px) {
+    .flip-card {
+        height: 300px;
     }
     
-    #main-title {
-        font-size: 3rem;
-    }
-    
-    .flip-card-back {
-        padding: 60px;
-    }
-    
-    .flip-card-back h3 {
-        font-size: 2rem;
-        margin-bottom: 25px;
-    }
-    
-    .flip-card-back p {
-        font-size: 1.4rem;
-    }
-}
-
-@media (max-width: 600px) {
     #main-title {
         font-size: 2.5rem;
-        padding: 0 20px;
     }
     
-    .memory-grid {
-        gap: 40px;
-    }
-    
-    .flip-card-back {
-        padding: 40px;
+    .subtitle {
+        font-size: 1.2rem;
     }
     
     .flip-card-back h3 {
         font-size: 1.6rem;
-        margin-bottom: 20px;
     }
     
     .flip-card-back p {
         font-size: 1.2rem;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .memory-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        max-width: 900px;
+    }
+    
+    .flip-card {
+        height: 250px;
+    }
+    
+    header {
+        margin-bottom: 10px;
+    }
+    
+    #main-title {
+        font-size: 2.2rem;
+        margin-bottom: 5px;
+    }
+    
+    .subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+    
+    footer {
+        margin-top: 10px;
+        padding: 5px;
     }
 } 

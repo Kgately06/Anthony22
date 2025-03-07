@@ -44,7 +44,7 @@ function createFlipCards() {
         flipCard.innerHTML = `
             <div class="flip-card-inner">
                 <div class="flip-card-front">
-                    <img src="${memory.image}" alt="${memory.title}">
+                    <img src="${memory.image}" alt="${memory.title}" loading="lazy">
                 </div>
                 <div class="flip-card-back">
                     <h3>${memory.title}</h3>
@@ -53,7 +53,15 @@ function createFlipCards() {
             </div>
         `;
         
+        // Simpler event handling for better compatibility
         flipCard.addEventListener('click', function() {
+            // Remove flipped class from all other cards
+            document.querySelectorAll('.flip-card.flipped').forEach(card => {
+                if (card !== this) {
+                    card.classList.remove('flipped');
+                }
+            });
+            // Toggle this card
             this.classList.toggle('flipped');
         });
         
@@ -64,4 +72,21 @@ function createFlipCards() {
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
     createFlipCards();
+    
+    // Make sure no cards start flipped
+    document.querySelectorAll('.flip-card').forEach(card => {
+        card.classList.remove('flipped');
+    });
+    
+    // Fix for iOS Safari 100vh issue
+    function fixHeight() {
+        document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    }
+    
+    // Run on page load
+    fixHeight();
+    
+    // Run on resize
+    window.addEventListener('resize', fixHeight);
+    window.addEventListener('orientationchange', fixHeight);
 }); 
