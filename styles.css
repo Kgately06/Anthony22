@@ -306,12 +306,11 @@ footer {
     display: none;
 }
 
-/* Mobile Optimization Improvements */
+/* Responsive Design - Simplified */
 @media (max-width: 900px) {
     .memory-grid {
         grid-template-columns: 1fr;
         max-width: 450px;
-        gap: 30px;
     }
     
     #main-title {
@@ -321,26 +320,11 @@ footer {
     .subtitle {
         font-size: 1.6rem;
     }
-    
-    /* Improved card entrance animation for mobile */
-    .flip-card {
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeInUp 0.5s ease forwards;
-    }
-    
-    /* Staggered animation for cards */
-    .flip-card:nth-child(1) { animation-delay: 0.1s; }
-    .flip-card:nth-child(2) { animation-delay: 0.2s; }
-    .flip-card:nth-child(3) { animation-delay: 0.3s; }
-    .flip-card:nth-child(4) { animation-delay: 0.4s; }
-    .flip-card:nth-child(5) { animation-delay: 0.5s; }
-    .flip-card:nth-child(6) { animation-delay: 0.6s; }
 }
 
 @media (max-width: 600px) {
     .container {
-        padding: 15px 10px;
+        padding: 15px;
     }
     
     header {
@@ -348,7 +332,7 @@ footer {
     }
     
     .memory-grid {
-        gap: 25px;
+        gap: 20px;
     }
     
     #main-title {
@@ -366,14 +350,12 @@ footer {
         margin-bottom: 15px;
     }
     
-    /* Improve touch targets for mobile */
     .flip-card-back {
         padding: 20px 15px;
     }
     
     .flip-card-back h3 {
         font-size: 1.8rem;
-        padding: 8px 0;  /* Larger touch target */
     }
     
     .flip-card-back p {
@@ -387,25 +369,17 @@ footer {
     .response-textarea {
         min-height: 80px;
         font-size: 1.2rem;
-        padding: 12px;  /* Larger touch area */
     }
     
     .add-response-btn, .save-response-btn, .cancel-response-btn, .edit-response-btn {
-        padding: 10px 15px;  /* Larger touch targets */
+        padding: 6px 12px;
         font-size: 1.2rem;
-        margin-top: 5px;
-    }
-    
-    /* Ensure form elements have enough space between them */
-    .response-buttons {
-        margin-top: 12px;
     }
 }
 
 @media (max-width: 400px) {
     .flip-card {
         height: 300px;
-        margin-bottom: 20px;
     }
     
     #main-title {
@@ -434,25 +408,17 @@ footer {
     }
     
     .add-response-btn, .save-response-btn, .cancel-response-btn, .edit-response-btn {
-        padding: 8px 12px;
+        padding: 5px 10px;
         font-size: 1.1rem;
-        width: 100%;  /* Full width buttons are easier to tap */
-        margin-bottom: 8px;
-    }
-    
-    /* Stack buttons for very small screens */
-    .response-buttons {
-        flex-direction: column;
-        gap: 8px;
     }
 }
 
-/* Fix for mobile landscape mode */
+/* Landscape orientation on mobile */
 @media (max-height: 500px) and (orientation: landscape) {
     .memory-grid {
         grid-template-columns: repeat(2, 1fr);
-        max-width: 900px;
         gap: 15px;
+        max-width: 900px;
     }
     
     .flip-card {
@@ -469,48 +435,12 @@ footer {
     }
     
     .subtitle {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         margin-bottom: 10px;
     }
     
     footer {
-        padding: 10px;
         margin-top: 10px;
-    }
-}
-
-/* Improve mobile scrolling and touch behavior */
-@media (hover: none) and (pointer: coarse) {
-    /* Better tap highlights for mobile */
-    .flip-trigger:active {
-        background-color: rgba(44, 62, 80, 0.1);
-    }
-    
-    /* Remove hover effects that don't work well on touch */
-    .flip-card-front.flip-trigger:hover {
-        transform: none;
-    }
-    
-    /* Make sure buttons have clear active states */
-    .add-response-btn:active, .save-response-btn:active, .edit-response-btn:active {
-        background-color: var(--button-hover);
-        transform: scale(0.98);
-    }
-    
-    .cancel-response-btn:active {
-        background-color: #d0d0d0;
-        transform: scale(0.98);
-    }
-}
-
-/* Card animation */
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
+        padding: 5px;
     }
 } 
