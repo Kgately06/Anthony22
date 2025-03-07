@@ -1,21 +1,3 @@
-// Initialize Firebase with a public test database
-// This is a read/write public database just for this application
-// In a real production app, you would use proper authentication
-const firebaseConfig = {
-    apiKey: "AIzaSyBr5X9yDFnuqJ4UYJPx-jnS8N1PrKgGPOY",
-    authDomain: "anthonykait-memories.firebaseapp.com",
-    databaseURL: "https://anthonykait-memories-default-rtdb.firebaseio.com",
-    projectId: "anthonykait-memories",
-    storageBucket: "anthonykait-memories.appspot.com",
-    messagingSenderId: "107508133764",
-    appId: "1:107508133764:web:d61c0a95e22ab79fe4f8d7"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
-const memoriesRef = database.ref('memories');
-
 // Define memories data - 6 large cards
 const memories = [
     {
@@ -55,235 +37,172 @@ function createFlipCards() {
     const memoryGrid = document.querySelector('.memory-grid');
     memoryGrid.innerHTML = '';
     
-    // First load any responses from Firebase
-    memoriesRef.once('value')
-        .then((snapshot) => {
-            const savedResponses = snapshot.val() || {};
-            
-            // Now create the cards with the responses from Firebase
-            memories.forEach((memory, index) => {
-                // Load Anthony's response from Firebase if it exists
-                const anthonyResponse = savedResponses[index] || '';
-                const showingResponseForm = false; // Form starts hidden
-                
-                const flipCard = document.createElement('div');
-                flipCard.className = 'flip-card';
-                flipCard.dataset.index = index;
-                
-                const responseHtml = anthonyResponse ? 
-                    `<div class="anthony-response-container">
-                        <h4>Anthony's Memory:</h4>
-                        <p class="anthony-response">${anthonyResponse.replace(/\n/g, '<br>')}</p>
-                        <button class="edit-response-btn">Edit</button>
-                    </div>` : '';
-                
-                const responseForm = `
-                    <div class="response-form ${showingResponseForm ? '' : 'hidden'}">
+    memories.forEach((memory, index) => {
+        const flipCard = document.createElement('div');
+        flipCard.className = 'flip-card';
+        flipCard.dataset.index = index;
+        
+        // Set initial card structure
+        flipCard.innerHTML = `
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <img src="${memory.image}" alt="${memory.title}" loading="lazy">
+                </div>
+                <div class="flip-card-back">
+                    <h3>${memory.title}</h3>
+                    <div class="kait-message">
+                        <h4>From Kait:</h4>
+                        <p>${memory.description}</p>
+                    </div>
+                    <div class="loading-indicator">Loading...</div>
+                    <button class="add-response-btn hidden">Favorite memory from this picture</button>
+                    <div class="anthony-response-container hidden"></div>
+                    <div class="response-form hidden">
                         <h4>Anthony, share your favorite memory from this picture:</h4>
-                        <textarea class="response-textarea" placeholder="Write your favorite memory here...">${anthonyResponse}</textarea>
+                        <textarea class="response-textarea" placeholder="Write your favorite memory here..."></textarea>
                         <div class="response-buttons">
                             <button class="save-response-btn">Save</button>
                             <button class="cancel-response-btn">Cancel</button>
                         </div>
                     </div>
-                `;
-                
-                flipCard.innerHTML = `
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <img src="${memory.image}" alt="${memory.title}" loading="lazy">
-                        </div>
-                        <div class="flip-card-back">
-                            <h3>${memory.title}</h3>
-                            <div class="kait-message">
-                                <h4>From Kait:</h4>
-                                <p>${memory.description}</p>
-                            </div>
-                            ${!showingResponseForm && !anthonyResponse ? 
-                                `<button class="add-response-btn">Favorite memory from this picture</button>` : ''}
-                            ${!showingResponseForm && anthonyResponse ? responseHtml : ''}
-                            ${responseForm}
-                        </div>
-                    </div>
-                `;
-                
-                // Simpler event handling for better compatibility
-                flipCard.addEventListener('click', function(e) {
-                    // Don't flip if clicking on buttons or textarea
-                    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'TEXTAREA') {
-                        e.stopPropagation();
-                        return;
-                    }
-                    
-                    // Remove flipped class from all other cards
-                    document.querySelectorAll('.flip-card.flipped').forEach(card => {
-                        if (card !== this) {
-                            card.classList.remove('flipped');
-                        }
-                    });
-                    // Toggle this card
-                    this.classList.toggle('flipped');
-                });
-                
-                // Add event listeners for the response buttons
-                flipCard.querySelector('.flip-card-back').addEventListener('click', function(e) {
-                    e.stopPropagation(); // Prevent the card from flipping when clicking buttons
-                    
-                    const cardIndex = flipCard.dataset.index;
-                    
-                    if (e.target.classList.contains('add-response-btn')) {
-                        flipCard.querySelector('.response-form').classList.remove('hidden');
-                        e.target.classList.add('hidden');
-                    }
-                    
-                    if (e.target.classList.contains('edit-response-btn')) {
-                        flipCard.querySelector('.response-form').classList.remove('hidden');
-                        flipCard.querySelector('.anthony-response-container').classList.add('hidden');
-                    }
-                    
-                    if (e.target.classList.contains('save-response-btn')) {
-                        const responseText = flipCard.querySelector('.response-textarea').value;
-                        
-                        // Save to Firebase
-                        updateStatus('syncing', 'Saving memory...');
-                        
-                        memoriesRef.child(cardIndex).set(responseText)
-                            .then(() => {
-                                // Update the displayed response
-                                if (flipCard.querySelector('.anthony-response-container')) {
-                                    flipCard.querySelector('.anthony-response-container').remove();
-                                }
-                                
-                                // Create new response container
-                                const responseContainer = document.createElement('div');
-                                responseContainer.className = 'anthony-response-container';
-                                responseContainer.innerHTML = `
-                                    <h4>Anthony's Memory:</h4>
-                                    <p class="anthony-response">${responseText.replace(/\n/g, '<br>')}</p>
-                                    <button class="edit-response-btn">Edit</button>
-                                `;
-                                
-                                // Insert before response form
-                                const responseForm = flipCard.querySelector('.response-form');
-                                responseForm.parentNode.insertBefore(responseContainer, responseForm);
-                                
-                                // Hide the form
-                                responseForm.classList.add('hidden');
-                                
-                                // Show success notification
-                                showToast('Memory saved and shared with Kait!');
-                                updateStatus('connected', 'Connected and sharing memories');
-                            })
-                            .catch(error => {
-                                console.error("Error saving response:", error);
-                                showToast('Error saving memory. Please try again.');
-                                updateStatus('error', 'Connection error. Please refresh the page.');
-                            });
-                    }
-                    
-                    if (e.target.classList.contains('cancel-response-btn')) {
-                        flipCard.querySelector('.response-form').classList.add('hidden');
-                        
-                        // Show the add button if there's no response yet
-                        const anthonyResponse = savedResponses[cardIndex];
-                        if (!anthonyResponse) {
-                            const addButton = flipCard.querySelector('.add-response-btn');
-                            if (addButton) {
-                                addButton.classList.remove('hidden');
-                            } else {
-                                // Create the add button if it doesn't exist
-                                const addButton = document.createElement('button');
-                                addButton.className = 'add-response-btn';
-                                addButton.textContent = 'Favorite memory from this picture';
-                                flipCard.querySelector('.flip-card-back').appendChild(addButton);
-                            }
-                        } else {
-                            // Show the existing response
-                            if (flipCard.querySelector('.anthony-response-container')) {
-                                flipCard.querySelector('.anthony-response-container').classList.remove('hidden');
-                            }
-                        }
-                    }
-                });
-                
-                memoryGrid.appendChild(flipCard);
-            });
-        })
-        .catch(error => {
-            console.error("Error loading memories:", error);
-            updateStatus('error', 'Connection error. Please refresh the page.');
-        });
-}
-
-// Function to show toast notification
-function showToast(message, duration = 3000) {
-    const toast = document.getElementById('toast-notification');
-    toast.textContent = message;
-    toast.classList.add('show');
-    
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, duration);
-}
-
-// Function to update status message
-function updateStatus(status, message) {
-    const statusElement = document.getElementById('status-message');
-    statusElement.textContent = message;
-    
-    // Remove all classes and add the new one
-    statusElement.className = '';
-    if (status !== 'connected') {
-        statusElement.classList.add(status);
-    }
-}
-
-// Listen for changes to the database to keep in sync
-function setupRealtimeUpdates() {
-    memoriesRef.on('value', (snapshot) => {
-        const savedResponses = snapshot.val() || {};
+                </div>
+            </div>
+        `;
         
-        // Update any visible cards with new data
-        Object.keys(savedResponses).forEach(index => {
-            const card = document.querySelector(`.flip-card[data-index="${index}"]`);
-            if (card) {
-                const responseContainer = card.querySelector('.anthony-response-container');
-                if (responseContainer) {
-                    // Update existing response container
-                    const responseParagraph = responseContainer.querySelector('.anthony-response');
-                    if (responseParagraph) {
-                        responseParagraph.innerHTML = savedResponses[index].replace(/\n/g, '<br>');
-                    }
-                } else {
-                    // Create new response container if it doesn't exist and there's data
-                    const responseText = savedResponses[index];
-                    if (responseText) {
-                        // Remove add button if it exists
-                        const addButton = card.querySelector('.add-response-btn');
-                        if (addButton) {
-                            addButton.remove();
-                        }
-                        
-                        // Create new response container
-                        const newResponseContainer = document.createElement('div');
-                        newResponseContainer.className = 'anthony-response-container';
-                        newResponseContainer.innerHTML = `
+        // Simpler event handling for better compatibility
+        flipCard.addEventListener('click', function(e) {
+            // Don't flip if clicking on buttons or textarea
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'TEXTAREA') {
+                e.stopPropagation();
+                return;
+            }
+            
+            // Remove flipped class from all other cards
+            document.querySelectorAll('.flip-card.flipped').forEach(card => {
+                if (card !== this) {
+                    card.classList.remove('flipped');
+                }
+            });
+            // Toggle this card
+            this.classList.toggle('flipped');
+        });
+        
+        memoryGrid.appendChild(flipCard);
+        
+        // Load the response from Firebase
+        loadResponse(index, flipCard);
+    });
+    
+    // Set up event listeners for response buttons on all cards
+    setupResponseEventListeners();
+}
+
+// Load response from Firebase
+function loadResponse(index, flipCard) {
+    memoriesRef.child(index.toString()).once('value', (snapshot) => {
+        const anthonyResponse = snapshot.val();
+        const loadingIndicator = flipCard.querySelector('.loading-indicator');
+        
+        // Hide loading indicator
+        loadingIndicator.classList.add('hidden');
+        
+        if (anthonyResponse) {
+            // If a response exists, show it
+            const responseContainer = flipCard.querySelector('.anthony-response-container');
+            responseContainer.innerHTML = `
+                <h4>Anthony's Memory:</h4>
+                <p class="anthony-response">${anthonyResponse.replace(/\n/g, '<br>')}</p>
+                <button class="edit-response-btn">Edit</button>
+            `;
+            responseContainer.classList.remove('hidden');
+        } else {
+            // If no response, show the add button
+            const addButton = flipCard.querySelector('.add-response-btn');
+            addButton.classList.remove('hidden');
+        }
+    });
+}
+
+// Set up event listeners for all response buttons
+function setupResponseEventListeners() {
+    document.querySelectorAll('.flip-card-back').forEach(cardBack => {
+        cardBack.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent the card from flipping when clicking buttons
+            
+            const flipCard = this.closest('.flip-card');
+            const index = flipCard.dataset.index;
+            const responseForm = flipCard.querySelector('.response-form');
+            const responseContainer = flipCard.querySelector('.anthony-response-container');
+            const addButton = flipCard.querySelector('.add-response-btn');
+            const textarea = flipCard.querySelector('.response-textarea');
+            
+            // Add button clicked
+            if (e.target.classList.contains('add-response-btn')) {
+                // Get existing response from Firebase to populate textarea
+                memoriesRef.child(index).once('value', (snapshot) => {
+                    const existingResponse = snapshot.val() || '';
+                    textarea.value = existingResponse;
+                    
+                    // Show the form and hide the add button
+                    responseForm.classList.remove('hidden');
+                    addButton.classList.add('hidden');
+                });
+            }
+            
+            // Edit button clicked
+            if (e.target.classList.contains('edit-response-btn')) {
+                // Get existing response from Firebase to populate textarea
+                memoriesRef.child(index).once('value', (snapshot) => {
+                    const existingResponse = snapshot.val() || '';
+                    textarea.value = existingResponse;
+                    
+                    // Show the form and hide the response container
+                    responseForm.classList.remove('hidden');
+                    responseContainer.classList.add('hidden');
+                });
+            }
+            
+            // Save button clicked
+            if (e.target.classList.contains('save-response-btn')) {
+                const responseText = textarea.value;
+                
+                // Save to Firebase
+                memoriesRef.child(index).set(responseText)
+                    .then(() => {
+                        // Update the displayed response
+                        responseContainer.innerHTML = `
                             <h4>Anthony's Memory:</h4>
                             <p class="anthony-response">${responseText.replace(/\n/g, '<br>')}</p>
                             <button class="edit-response-btn">Edit</button>
                         `;
                         
-                        // Find where to insert it
-                        const responseForm = card.querySelector('.response-form');
-                        responseForm.parentNode.insertBefore(newResponseContainer, responseForm);
-                    }
-                }
+                        // Show the response and hide the form
+                        responseContainer.classList.remove('hidden');
+                        responseForm.classList.add('hidden');
+                    })
+                    .catch(error => {
+                        console.error("Error saving response: ", error);
+                        alert("There was an error saving your memory. Please try again.");
+                    });
+            }
+            
+            // Cancel button clicked
+            if (e.target.classList.contains('cancel-response-btn')) {
+                // Hide the form
+                responseForm.classList.add('hidden');
                 
-                // Also update textarea content in case it's being edited
-                const textarea = card.querySelector('.response-textarea');
-                if (textarea) {
-                    textarea.value = savedResponses[index] || '';
-                }
+                // Check if there's a response in Firebase
+                memoriesRef.child(index).once('value', (snapshot) => {
+                    const existingResponse = snapshot.val();
+                    
+                    if (existingResponse) {
+                        // If there's a response, show the response container
+                        responseContainer.classList.remove('hidden');
+                    } else {
+                        // If no response, show the add button
+                        addButton.classList.remove('hidden');
+                    }
+                });
             }
         });
     });
@@ -292,21 +211,10 @@ function setupRealtimeUpdates() {
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
     createFlipCards();
-    setupRealtimeUpdates();
     
     // Make sure no cards start flipped
     document.querySelectorAll('.flip-card').forEach(card => {
         card.classList.remove('flipped');
-    });
-    
-    // Check the connection to Firebase
-    const connectedRef = firebase.database().ref('.info/connected');
-    connectedRef.on('value', (snap) => {
-        if (snap.val() === true) {
-            updateStatus('connected', 'Connected and sharing memories');
-        } else {
-            updateStatus('error', 'Waiting for connection...');
-        }
     });
     
     // Fix for iOS Safari 100vh issue

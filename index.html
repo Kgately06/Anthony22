@@ -9,10 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
     <div class="container">
@@ -24,19 +20,18 @@
         <div class="memory-grid">
             <!-- Memory cards will be inserted here by JavaScript -->
         </div>
-        
-        <div class="share-section">
-            <p class="share-instructions">Anthony's memories will be automatically saved and shared with Kait!</p>
-            <div id="status-message">Connected and sharing memories</div>
-        </div>
     </div>
-
-    <div class="toast" id="toast-notification">Notification message here</div>
 
     <footer>
         <p>Made with love for you ❤️ Kait</p>
     </footer>
 
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <!-- Firebase Database -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    
+    <script src="firebase-config.js"></script>
     <script src="script.js"></script>
 </body>
 </html> 
