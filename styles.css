@@ -7,6 +7,8 @@
     --text-color: #333333;
     --shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
     --vh: 1vh;
+    --button-color: #3498db;
+    --button-hover: #2980b9;
 }
 
 * {
@@ -175,6 +177,92 @@ footer {
     width: 100%;
 }
 
+/* Interactive elements for Anthony's responses */
+.kait-message {
+    margin-bottom: 20px;
+    text-align: left;
+    width: 100%;
+}
+
+.kait-message h4, .anthony-response-container h4 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    text-align: left;
+}
+
+.anthony-response-container {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(44, 62, 80, 0.2);
+    width: 100%;
+    text-align: left;
+}
+
+.anthony-response {
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
+.response-form {
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(44, 62, 80, 0.2);
+    text-align: left;
+}
+
+.response-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    resize: vertical;
+}
+
+.response-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.add-response-btn, .save-response-btn, .cancel-response-btn, .edit-response-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.3rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.add-response-btn, .save-response-btn, .edit-response-btn {
+    background-color: var(--button-color);
+    color: white;
+}
+
+.add-response-btn:hover, .save-response-btn:hover, .edit-response-btn:hover {
+    background-color: var(--button-hover);
+    transform: translateY(-2px);
+}
+
+.cancel-response-btn {
+    background-color: #e0e0e0;
+    color: var(--text-color);
+}
+
+.cancel-response-btn:hover {
+    background-color: #d0d0d0;
+    transform: translateY(-2px);
+}
+
+.hidden {
+    display: none;
+}
+
 /* Responsive Design - Simplified */
 @media (max-width: 900px) {
     .memory-grid {
@@ -230,6 +318,20 @@ footer {
     .flip-card-back p {
         font-size: 1.3rem;
     }
+    
+    .kait-message h4, .anthony-response-container h4 {
+        font-size: 1.4rem;
+    }
+    
+    .response-textarea {
+        min-height: 80px;
+        font-size: 1.2rem;
+    }
+    
+    .add-response-btn, .save-response-btn, .cancel-response-btn, .edit-response-btn {
+        padding: 6px 12px;
+        font-size: 1.2rem;
+    }
 }
 
 @media (max-width: 400px) {
@@ -251,6 +353,20 @@ footer {
     
     .flip-card-back p {
         font-size: 1.2rem;
+    }
+    
+    .kait-message h4, .anthony-response-container h4 {
+        font-size: 1.3rem;
+    }
+    
+    .response-textarea {
+        min-height: 70px;
+        font-size: 1.1rem;
+    }
+    
+    .add-response-btn, .save-response-btn, .cancel-response-btn, .edit-response-btn {
+        padding: 5px 10px;
+        font-size: 1.1rem;
     }
 }
 
