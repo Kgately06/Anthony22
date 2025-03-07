@@ -1,6 +1,5 @@
-I apologize for the confusion. It seems the file wasn't updated. Let me provide the content again in a clearer format that you can manually copy and paste into your README.md file:
 
-# Anthony's Memory Cards
+# Anthony 
 
 A heartfelt web application created as a personal gift from Kait to Anthony, featuring interactive memory cards that showcase special moments and messages of love and appreciation.
 
@@ -40,5 +39,3 @@ Simply open the `index.html` file in any modern web browser to view and interact
 ## Created With Love
 
 Made with love by Kait ❤️
-
-You can copy this entire text and replace the contents of your README.md file with it. The formatting should be preserved when you paste it into your file.
