@@ -18,4 +18,14 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 // Create a reference to the memories node in the database
-const memoriesRef = database.ref('memories'); 
+const memoriesRef = database.ref('memories');
+
+// Check Firebase connection status
+const connectedRef = firebase.database().ref(".info/connected");
+connectedRef.on("value", (snap) => {
+  if (snap.val() === true) {
+    console.log("Connected to Firebase");
+  } else {
+    console.log("Not connected to Firebase");
+  }
+}); 

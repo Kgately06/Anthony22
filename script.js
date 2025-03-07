@@ -99,28 +99,46 @@ function createFlipCards() {
 
 // Load response from Firebase
 function loadResponse(index, flipCard) {
-    memoriesRef.child(index.toString()).once('value', (snapshot) => {
-        const anthonyResponse = snapshot.val();
-        const loadingIndicator = flipCard.querySelector('.loading-indicator');
-        
-        // Hide loading indicator
+    const loadingIndicator = flipCard.querySelector('.loading-indicator');
+    const addButton = flipCard.querySelector('.add-response-btn');
+    
+    // Set a timeout to handle potential Firebase connection issues
+    const loadingTimeout = setTimeout(() => {
+        console.log("Firebase load timeout - showing add button");
         loadingIndicator.classList.add('hidden');
-        
-        if (anthonyResponse) {
-            // If a response exists, show it
-            const responseContainer = flipCard.querySelector('.anthony-response-container');
-            responseContainer.innerHTML = `
-                <h4>Anthony's Memory:</h4>
-                <p class="anthony-response">${anthonyResponse.replace(/\n/g, '<br>')}</p>
-                <button class="edit-response-btn">Edit</button>
-            `;
-            responseContainer.classList.remove('hidden');
-        } else {
-            // If no response, show the add button
-            const addButton = flipCard.querySelector('.add-response-btn');
+        addButton.classList.remove('hidden');
+    }, 5000); // 5 second timeout
+    
+    memoriesRef.child(index.toString()).once('value')
+        .then((snapshot) => {
+            clearTimeout(loadingTimeout);
+            const anthonyResponse = snapshot.val();
+            
+            // Hide loading indicator
+            loadingIndicator.classList.add('hidden');
+            
+            if (anthonyResponse) {
+                // If a response exists, show it
+                const responseContainer = flipCard.querySelector('.anthony-response-container');
+                responseContainer.innerHTML = `
+                    <h4>Anthony's Memory:</h4>
+                    <p class="anthony-response">${anthonyResponse.replace(/\n/g, '<br>')}</p>
+                    <button class="edit-response-btn">Edit</button>
+                `;
+                responseContainer.classList.remove('hidden');
+            } else {
+                // If no response, show the add button
+                addButton.classList.remove('hidden');
+            }
+        })
+        .catch(error => {
+            clearTimeout(loadingTimeout);
+            console.error("Error loading response:", error);
+            
+            // Hide loading indicator and show add button on error
+            loadingIndicator.classList.add('hidden');
             addButton.classList.remove('hidden');
-        }
-    });
+        });
 }
 
 // Set up event listeners for all response buttons
