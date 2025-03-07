@@ -32,10 +32,23 @@ const memories = [
     }
 ];
 
+// Check if device is touch/mobile
+const isTouchDevice = () => {
+    return ('ontouchstart' in window) || 
+           (navigator.maxTouchPoints > 0) || 
+           (navigator.msMaxTouchPoints > 0);
+};
+
 // Create flip cards
 function createFlipCards() {
     const memoryGrid = document.querySelector('.memory-grid');
     memoryGrid.innerHTML = '';
+    
+    // Check if we're on a touch device
+    const isTouch = isTouchDevice();
+    if (isTouch) {
+        document.body.classList.add('touch-device');
+    }
     
     memories.forEach((memory, index) => {
         const flipCard = document.createElement('div');
@@ -45,12 +58,12 @@ function createFlipCards() {
         // Set initial card structure
         flipCard.innerHTML = `
             <div class="flip-card-inner">
-                <div class="flip-card-front">
+                <div class="flip-card-front flip-trigger">
                     <img src="${memory.image}" alt="${memory.title}" loading="lazy">
                 </div>
                 <div class="flip-card-back">
-                    <h3>${memory.title}</h3>
-                    <div class="kait-message">
+                    <h3 class="flip-trigger">${memory.title}</h3>
+                    <div class="kait-message flip-trigger">
                         <h4>From Kait:</h4>
                         <p>${memory.description}</p>
                     </div>
@@ -69,22 +82,60 @@ function createFlipCards() {
             </div>
         `;
         
-        // Simpler event handling for better compatibility
-        flipCard.addEventListener('click', function(e) {
-            // Don't flip if clicking on buttons or textarea
-            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'TEXTAREA') {
-                e.stopPropagation();
+        // Add flipping functionality to the entire card (both front and back)
+        // Use appropriate event for touch devices
+        const frontTrigger = flipCard.querySelector('.flip-card-front');
+        const triggerEvent = isTouch ? 'touchend' : 'click';
+        
+        frontTrigger.addEventListener(triggerEvent, function(e) {
+            // Prevent default behavior for touch events
+            if (e.type === 'touchend') {
+                e.preventDefault();
+            }
+            
+            const card = this.closest('.flip-card');
+            
+            // Remove flipped class from all other cards
+            document.querySelectorAll('.flip-card.flipped').forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.remove('flipped');
+                }
+            });
+            
+            // Toggle this card
+            card.classList.toggle('flipped');
+            e.stopPropagation();
+        });
+        
+        // Make card background area also clickable for flipping
+        const backSide = flipCard.querySelector('.flip-card-back');
+        backSide.addEventListener(triggerEvent, function(e) {
+            // Prevent default behavior for touch events
+            if (e.type === 'touchend') {
+                e.preventDefault();
+            }
+            
+            // Don't flip if clicking on buttons, textarea, or interactive elements
+            if (e.target.tagName === 'BUTTON' || 
+                e.target.tagName === 'TEXTAREA' || 
+                e.target.closest('.response-form') || 
+                e.target.closest('.response-buttons') || 
+                e.target.closest('.anthony-response-container') || 
+                (e.target.classList.contains('add-response-btn'))) {
                 return;
             }
             
+            // If clicking on background or non-interactive elements, flip the card
+            const card = this.closest('.flip-card');
+            
             // Remove flipped class from all other cards
-            document.querySelectorAll('.flip-card.flipped').forEach(card => {
-                if (card !== this) {
-                    card.classList.remove('flipped');
+            document.querySelectorAll('.flip-card.flipped').forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.remove('flipped');
                 }
             });
-            // Toggle this card
-            this.classList.toggle('flipped');
+            
+            card.classList.toggle('flipped');
         });
         
         memoryGrid.appendChild(flipCard);
@@ -95,6 +146,53 @@ function createFlipCards() {
     
     // Set up event listeners for response buttons on all cards
     setupResponseEventListeners();
+    
+    // Add specific click handlers for the message areas with visual indicators
+    document.querySelectorAll('.kait-message.flip-trigger').forEach(trigger => {
+        trigger.addEventListener(triggerEvent, function(e) {
+            // Prevent default behavior for touch events
+            if (e.type === 'touchend') {
+                e.preventDefault();
+            }
+            
+            // If we're clicking directly on the message (not a child element that needs special handling)
+            if (e.target === this || e.target.tagName === 'P' || e.target.tagName === 'H4') {
+                const flipCard = this.closest('.flip-card');
+                
+                // Remove flipped class from all other cards
+                document.querySelectorAll('.flip-card.flipped').forEach(otherCard => {
+                    if (otherCard !== flipCard) {
+                        otherCard.classList.remove('flipped');
+                    }
+                });
+                
+                flipCard.classList.toggle('flipped');
+                e.stopPropagation();
+            }
+        });
+    });
+    
+    // Add handlers for card titles
+    document.querySelectorAll('h3.flip-trigger').forEach(trigger => {
+        trigger.addEventListener(triggerEvent, function(e) {
+            // Prevent default behavior for touch events
+            if (e.type === 'touchend') {
+                e.preventDefault();
+            }
+            
+            const flipCard = this.closest('.flip-card');
+            
+            // Remove flipped class from all other cards
+            document.querySelectorAll('.flip-card.flipped').forEach(otherCard => {
+                if (otherCard !== flipCard) {
+                    otherCard.classList.remove('flipped');
+                }
+            });
+            
+            flipCard.classList.toggle('flipped');
+            e.stopPropagation();
+        });
+    });
 }
 
 // Load response from Firebase
