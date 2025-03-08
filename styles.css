@@ -181,6 +181,11 @@ header {
     object-fit: cover;
     object-position: center;
     border-radius: 18px;
+    transition: all 0.3s ease;
+}
+
+.hidden {
+    display: none;
 }
 
 .flip-card-back {
@@ -368,10 +373,6 @@ footer {
 .cancel-response-btn:hover {
     background-color: #d0d0d0;
     transform: translateY(-2px);
-}
-
-.hidden {
-    display: none;
 }
 
 /* Responsive Design - Simplified */

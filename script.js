@@ -2,31 +2,37 @@
 const memories = [
     {
         image: 'IMG_4496.jpeg',
+        secondImage: 'chicago.jpeg', // Using chicago.jpeg as requested
         title: 'Your Strength',
         description: 'You always know how to make me laugh, even on the toughest days. Your sense of humor brightens every moment we spend together. I love how you can turn any situation into something we can smile about.<br><br>P.S. Thank you for always including me.'
     },
     {
         image: 'IMG_6009.jpeg',
+        secondImage: 'brady.jpeg', // Using brady.jpeg as requested
         title: 'Your Humor',
         description: 'The way you face challenges head-on inspires me every day. Your determination and resilience make me proud to call you mine. I admire how you never back down when things get tough.<br><br>P.S. Shelf'
     },
     {
         image: 'IMG_8835.jpeg',
+        secondImage: 'firstclass.jpeg', // Using firstclass.jpeg as requested
         title: 'Your Ambition',
         description: 'I admire how passionate you are about your goals. The way you work toward what you want with such dedication shows your incredible character. Your drive inspires me to pursue my own dreams.<br><br>P.S. Thank you for every adventure'
     },
     {
         image: 'IMG_9418.jpeg',
+        secondImage: 'fun.jpeg', // Using fun.jpeg as requested
         title: 'Your Support',
         description: 'You believe in me even when I don\'t believe in myself. Your unwavering support gives me the confidence to pursue my dreams. Thank you for always being my biggest cheerleader and strongest advocate.<br><br>P.S. Thank you for teaching me how to do this.'
     },
     {
         image: 'IMG_9535.jpeg',
+        secondImage: 'flowers.jpeg', // Using flowers.jpeg as requested
         title: 'Your Thoughtfulness',
         description: 'You always remember the little things that matter to me. The way you pay attention to details and go out of your way to make me feel special means more than I can express. Your thoughtful nature is truly special.<br><br>P.S. Your the most handsome man'
     },
     {
         image: 'IMG_8801.jpeg',
+        secondImage: 'croatia.jpeg', // Using croatia.jpeg as requested
         title: 'Bond',
         description: 'You make me feel truly valued, cherished and loved. You are the most thoughtful, caring, and generous I have ever known. I never take it for granted, and I\'m thankful for you every single day.<br><br>P.S. I cannot wait to bring you on a first class vacation.'
     }
@@ -51,6 +57,7 @@ function createFlipCards() {
         const flipCardFront = document.createElement('div');
         flipCardFront.className = 'flip-card-front';
         
+        // Create single image element
         const img = document.createElement('img');
         img.src = memory.image;
         img.alt = memory.title;
@@ -160,8 +167,17 @@ function createFlipCards() {
                 }
             });
             
+            // Check if we're flipping back to front
+            const isCurrentlyFlipped = this.classList.contains('flipped');
+            
             // Toggle this card
             this.classList.toggle('flipped');
+            
+            // If it was flipped and now it's not (meaning we're flipping back to front)
+            if (isCurrentlyFlipped) {
+                // Toggle the image when flipping back to front
+                toggleFrontImage(this);
+            }
         });
         
         // Set up button click events
@@ -278,6 +294,28 @@ function createFlipCards() {
                 addButton.style.display = 'inline-block';
             });
     });
+}
+
+// Function to toggle between the first and second image
+function toggleFrontImage(card) {
+    // Simple approach - just replace the image source
+    const img = card.querySelector('.flip-card-front img');
+    const index = parseInt(card.dataset.index);
+    const memory = memories[index];
+    
+    console.log("Toggling image for card", index);
+    console.log("Current src:", img.src);
+    console.log("First image:", memory.image);
+    console.log("Second image:", memory.secondImage);
+    
+    // If the current src is the first image, switch to second image
+    if (img.src.includes(memory.image)) {
+        console.log("Switching to second image");
+        img.src = memory.secondImage;
+    } else {
+        console.log("Switching to first image");
+        img.src = memory.image;
+    }
 }
 
 // Format date in a nice readable format
