@@ -1,17 +1,3 @@
-/*
- * ANTHONY MEMORY CARDS - MVP VERSION (March 8, 2025)
- * 
- * THIS IS THE STABLE MVP VERSION - RESET POINT
- * 
- * If any future edits or changes cause issues, revert back to this version.
- * Core functionality:
- * - Memory cards with flip animation
- * - Firebase integration for storing Anthony's responses
- * - Responsive design for all devices
- * 
- * Created for Kait and Anthony
- */
-
 // Define memories data - 6 large cards
 const memories = [
     {
