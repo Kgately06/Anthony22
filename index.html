@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,6 +17,32 @@
             <h1 id="main-title">Anthony</h1>
             <p class="subtitle">Click each card to reveal why Kait loves and appreciates you.<br>You can also share your favorite memory from each picture!</p>
         </header>
+
+        <div class="music-player-container">
+            <div class="music-player">
+                <div class="music-info">
+                    <div class="song-details">
+                        <h4>New York City</h4>
+                        <p>Chris Bruni</p>
+                    </div>
+                    <p class="music-note">My favorite recent memory: Dancing with you to this song, and feeling like the most beautiful person in the world.</p>
+                </div>
+                <div class="player-controls">
+                    <button id="play-btn" class="play-btn">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <div class="volume-container">
+                        <i class="fas fa-volume-up"></i>
+                        <input type="range" id="volume-slider" min="0" max="100" value="70">
+                    </div>
+                </div>
+                <audio id="song" preload="metadata">
+                    <!-- You'll need to add your audio file here -->
+                    <source src="new-york-city.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
 
         <div class="memory-grid">
             <!-- Memory cards will be inserted here by JavaScript -->
