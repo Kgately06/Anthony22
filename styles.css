@@ -1,3 +1,17 @@
+/*
+ * ANTHONY MEMORY CARDS - MVP VERSION (March 8, 2025)
+ * 
+ * THIS IS THE STABLE MVP VERSION - RESET POINT
+ * 
+ * If any future edits or changes cause issues, revert back to this version.
+ * Core styles for:
+ * - Memory card layout and animations
+ * - Response forms and buttons
+ * - Responsive design for all devices
+ * 
+ * Created for Kait and Anthony
+ */
+
 /* Base Styles */
 :root {
     --primary-color: #2c3e50;
