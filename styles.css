@@ -13,6 +13,30 @@
     --music-player-border: rgba(44, 62, 80, 0.2);
 }
 
+/* Add animation keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+@keyframes floatEffect {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes sparkle {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -67,6 +91,12 @@ header {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     word-wrap: break-word;
     display: block;
+    background: linear-gradient(90deg, var(--primary-color), #3498db, var(--primary-color));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: sparkle 8s ease infinite;
 }
 
 .subtitle {
@@ -87,6 +117,7 @@ header {
     margin: 0 auto;
     width: 100%;
     max-width: 1200px;
+    animation: fadeIn 1.2s ease-out;
 }
 
 /* Flip Card Styles */
@@ -99,6 +130,7 @@ header {
     margin: 0 auto 20px;
     max-width: 450px;
     touch-action: manipulation;
+    animation: fadeIn 0.8s ease-out backwards;
 }
 
 .flip-card-inner {
@@ -128,6 +160,8 @@ header {
 
 .flip-card-front {
     background-color: #e0e0e0;
+    position: relative;
+    overflow: hidden;
 }
 
 .flip-card-front img {
@@ -136,6 +170,90 @@ header {
     object-fit: cover;
     object-position: center;
     border-radius: 18px;
+    transition: opacity 0.5s ease;
+}
+
+.first-image, .second-media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.5s ease;
+}
+
+.second-media {
+    opacity: 0;
+}
+
+/* Video container */
+.video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.memory-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 18px;
+}
+
+/* Play button overlay */
+.video-play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: background-color 0.3s ease;
+}
+
+.video-play-overlay:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.video-play-overlay i {
+    font-size: 5rem;
+    color: white;
+    opacity: 0.9;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.video-play-overlay:hover i {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+/* Image transition effect */
+.first-image.hidden {
+    opacity: 0;
+}
+
+.second-media.hidden {
+    opacity: 0;
+}
+
+.second-media:not(.hidden) {
+    opacity: 1;
+}
+
+.first-image:not(.hidden) {
+    opacity: 1;
 }
 
 .flip-card-back {
@@ -465,6 +583,7 @@ footer {
     border: 1px solid var(--music-player-border);
     position: relative;
     overflow: hidden;
+    animation: fadeIn 0.8s ease-out;
 }
 
 .music-player::before {
@@ -538,6 +657,7 @@ footer {
 }
 
 .stream-btn:hover {
+    animation: pulse 1.5s ease-in-out infinite;
     background-color: var(--button-hover);
     transform: translateY(-2px);
 }
@@ -567,5 +687,209 @@ footer {
     
     .stream-btn i {
         font-size: 1.6rem;
+    }
+}
+
+/* Apply animations to elements */
+.memory-grid {
+    animation: fadeIn 1.2s ease-out;
+}
+
+.flip-card {
+    animation: fadeIn 0.8s ease-out backwards;
+}
+
+/* Stagger the card animations */
+.flip-card:nth-child(1) { animation-delay: 0.1s; }
+.flip-card:nth-child(2) { animation-delay: 0.2s; }
+.flip-card:nth-child(3) { animation-delay: 0.3s; }
+.flip-card:nth-child(4) { animation-delay: 0.4s; }
+.flip-card:nth-child(5) { animation-delay: 0.5s; }
+.flip-card:nth-child(6) { animation-delay: 0.6s; }
+
+.music-player {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Add subtle floating animation to the music player */
+.music-player:hover {
+    animation: floatEffect 3s ease-in-out infinite;
+}
+
+/* Add a subtle pulse effect to the stream button */
+.stream-btn:hover {
+    animation: pulse 1.5s ease-in-out infinite;
+    background-color: var(--button-hover);
+    transform: translateY(-2px);
+}
+
+/* Add a subtle gradient animation to the header */
+#main-title {
+    background: linear-gradient(90deg, var(--primary-color), #3498db, var(--primary-color));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: sparkle 8s ease infinite;
+    display: inline-block;
+}
+
+/* Add subtle animation to the subtitle */
+.subtitle {
+    animation: sparkle 8s ease infinite;
+}
+
+/* Memory Progress Bar */
+.memory-progress {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    padding: 0 15px;
+    text-align: center;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.memory-progress p {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    height: 10px;
+    background-color: rgba(44, 62, 80, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--button-color), #9b59b6);
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+/* Love Letter Styles */
+.love-letter {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 40px;
+    padding: 0 15px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1s ease;
+}
+
+.love-letter.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.love-letter-inner {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(44, 62, 80, 0.1);
+}
+
+.love-letter-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(155, 89, 182, 0.1) 0%, rgba(155, 89, 182, 0) 50%);
+    pointer-events: none;
+}
+
+.love-letter h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    color: var(--primary-color);
+    margin: 0 0 20px;
+    text-align: center;
+}
+
+.love-letter p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.love-signature {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    text-align: right;
+    font-size: 1.8rem !important;
+    margin-top: 30px;
+}
+
+/* Confetti Animation for completion */
+@keyframes confetti-fall {
+    0% { transform: translateY(-100vh) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(360deg); }
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: #f39c12;
+    top: -10px;
+    z-index: 999;
+    animation: confetti-fall linear forwards;
+}
+
+.confetti:nth-child(2n) {
+    background-color: #3498db;
+}
+
+.confetti:nth-child(3n) {
+    background-color: #2ecc71;
+}
+
+.confetti:nth-child(4n) {
+    background-color: #e74c3c;
+}
+
+.confetti:nth-child(5n) {
+    background-color: #9b59b6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .love-letter-inner {
+        padding: 20px;
+    }
+    
+    .love-letter h3 {
+        font-size: 2rem;
+    }
+    
+    .love-letter p {
+        font-size: 1.4rem;
+    }
+    
+    .love-signature {
+        font-size: 1.6rem !important;
+    }
+}
+
+/* Memory timestamp */
+.memory-timestamp {
+    font-size: 1.2rem;
+    color: #777;
+    font-style: italic;
+    margin: 5px 0 15px;
+}
+
+@media (max-width: 600px) {
+    .memory-timestamp {
+        font-size: 1.1rem;
     }
 } 
