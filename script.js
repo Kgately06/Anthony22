@@ -295,9 +295,6 @@ document.addEventListener('DOMContentLoaded', function() {
         card.classList.remove('flipped');
     });
     
-    // Initialize music player
-    initMusicPlayer();
-    
     // Fix for iOS Safari 100vh issue
     function fixHeight() {
         document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
@@ -309,61 +306,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // Run on resize
     window.addEventListener('resize', fixHeight);
     window.addEventListener('orientationchange', fixHeight);
-});
-
-// Initialize music player functionality
-function initMusicPlayer() {
-    const song = document.getElementById('song');
-    const playBtn = document.getElementById('play-btn');
-    const volumeSlider = document.getElementById('volume-slider');
-    const volumeIcon = document.querySelector('.volume-container i');
-    
-    // Set initial volume
-    song.volume = volumeSlider.value / 100;
-    
-    // Play/Pause functionality
-    playBtn.addEventListener('click', function() {
-        if (song.paused) {
-            song.play()
-                .then(() => {
-                    // Play started successfully
-                    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                })
-                .catch(error => {
-                    // Play failed - likely due to no audio file or browser policy
-                    console.error("Error playing audio:", error);
-                    alert("To hear the song, please add the 'new-york-city.mp3' file to your project.");
-                });
-        } else {
-            song.pause();
-            playBtn.innerHTML = '<i class="fas fa-play"></i>';
-        }
-    });
-    
-    // Volume control
-    volumeSlider.addEventListener('input', function() {
-        song.volume = this.value / 100;
-        
-        // Update volume icon based on level
-        if (this.value == 0) {
-            volumeIcon.className = 'fas fa-volume-mute';
-        } else if (this.value < 50) {
-            volumeIcon.className = 'fas fa-volume-down';
-        } else {
-            volumeIcon.className = 'fas fa-volume-up';
-        }
-    });
-    
-    // Update button when song ends
-    song.addEventListener('ended', function() {
-        playBtn.innerHTML = '<i class="fas fa-play"></i>';
-    });
-    
-    // Handle audio loading errors
-    song.addEventListener('error', function() {
-        console.error("Error loading audio file");
-        playBtn.disabled = true;
-        playBtn.style.opacity = 0.5;
-        playBtn.title = "Audio file not found";
-    });
-} 
+}); 

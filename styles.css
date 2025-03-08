@@ -513,74 +513,37 @@ footer {
     margin: 0;
 }
 
+/* Player Controls */
 .player-controls {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 15px;
 }
 
-.play-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+.stream-btn {
     background-color: var(--button-color);
     color: white;
     border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.4rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    gap: 10px;
+    text-decoration: none;
     transition: all 0.3s;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.play-btn:hover {
+.stream-btn:hover {
     background-color: var(--button-hover);
-    transform: scale(1.05);
+    transform: translateY(-2px);
 }
 
-.play-btn i {
+.stream-btn i {
     font-size: 1.8rem;
-}
-
-.volume-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.volume-container i {
-    color: var(--accent-color);
-    font-size: 1.6rem;
-}
-
-#volume-slider {
-    -webkit-appearance: none;
-    width: 100px;
-    height: 5px;
-    border-radius: 5px;
-    background: #d3d3d3;
-    outline: none;
-}
-
-#volume-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: var(--button-color);
-    cursor: pointer;
-}
-
-#volume-slider::-moz-range-thumb {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: var(--button-color);
-    cursor: pointer;
-    border: none;
 }
 
 /* Responsive adjustments for music player */
@@ -597,16 +560,12 @@ footer {
         font-size: 1.3rem;
     }
     
-    .play-btn {
-        width: 45px;
-        height: 45px;
+    .stream-btn {
+        padding: 8px 16px;
+        font-size: 1.3rem;
     }
     
-    .play-btn i {
+    .stream-btn i {
         font-size: 1.6rem;
-    }
-    
-    #volume-slider {
-        width: 80px;
     }
 } 
