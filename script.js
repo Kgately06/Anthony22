@@ -1,342 +1,351 @@
-// Define memories data - 6 large cards
-const memories = [
-    {
-        image: 'IMG_4496.jpeg',
-        secondImage: 'chicago.jpeg', // Using chicago.jpeg as requested
-        title: 'Your Strength',
-        description: 'You always know how to make me laugh, even on the toughest days. Your sense of humor brightens every moment we spend together. I love how you can turn any situation into something we can smile about.<br><br>P.S. Thank you for always including me.'
-    },
-    {
-        image: 'IMG_6009.jpeg',
-        secondImage: 'brady.jpeg', // Using brady.jpeg as requested
-        title: 'Your Humor',
-        description: 'The way you face challenges head-on inspires me every day. Your determination and resilience make me proud to call you mine. I admire how you never back down when things get tough.<br><br>P.S. Shelf'
-    },
-    {
-        image: 'IMG_8835.jpeg',
-        secondImage: 'firstclass.jpeg', // Using firstclass.jpeg as requested
-        title: 'Your Ambition',
-        description: 'I admire how passionate you are about your goals. The way you work toward what you want with such dedication shows your incredible character. Your drive inspires me to pursue my own dreams.<br><br>P.S. Thank you for every adventure'
-    },
-    {
-        image: 'IMG_9418.jpeg',
-        secondImage: 'fun.jpeg', // Using fun.jpeg as requested
-        title: 'Your Support',
-        description: 'You believe in me even when I don\'t believe in myself. Your unwavering support gives me the confidence to pursue my dreams. Thank you for always being my biggest cheerleader and strongest advocate.<br><br>P.S. Thank you for teaching me how to do this.'
-    },
-    {
-        image: 'IMG_9535.jpeg',
-        secondImage: 'flowers.jpeg', // Using flowers.jpeg as requested
-        title: 'Your Thoughtfulness',
-        description: 'You always remember the little things that matter to me. The way you pay attention to details and go out of your way to make me feel special means more than I can express. Your thoughtful nature is truly special.<br><br>P.S. Your the most handsome man'
-    },
-    {
-        image: 'IMG_8801.jpeg',
-        secondImage: 'croatia.jpeg', // Using croatia.jpeg as requested
-        title: 'Bond',
-        description: 'You make me feel truly valued, cherished and loved. You are the most thoughtful, caring, and generous I have ever known. I never take it for granted, and I\'m thankful for you every single day.<br><br>P.S. I cannot wait to bring you on a first class vacation.'
-    }
-];
+const STORAGE_KEY = 'memoryAppTemplateConfigV2';
 
-// Create flip cards
-function createFlipCards() {
-    const memoryGrid = document.querySelector('.memory-grid');
-    memoryGrid.innerHTML = '';
-    
-    memories.forEach((memory, index) => {
-        // Create the flip card element
-        const flipCard = document.createElement('div');
-        flipCard.className = 'flip-card';
-        flipCard.dataset.index = index;
-        
-        // Create the inner structure
-        const flipCardInner = document.createElement('div');
-        flipCardInner.className = 'flip-card-inner';
-        
-        // Create the front of the card
-        const flipCardFront = document.createElement('div');
-        flipCardFront.className = 'flip-card-front';
-        
-        // Create single image element
-        const img = document.createElement('img');
-        img.src = memory.image;
-        img.alt = memory.title;
-        img.loading = 'lazy';
-        
-        flipCardFront.appendChild(img);
-        
-        // Create the back of the card
-        const flipCardBack = document.createElement('div');
-        flipCardBack.className = 'flip-card-back';
-        
-        // Add the title
-        const title = document.createElement('h3');
-        title.textContent = memory.title;
-        flipCardBack.appendChild(title);
-        
-        // Add Kait's message
-        const kaitMessage = document.createElement('div');
-        kaitMessage.className = 'kait-message';
-        
-        const fromKait = document.createElement('h4');
-        fromKait.textContent = 'From Kait:';
-        kaitMessage.appendChild(fromKait);
-        
-        const messageText = document.createElement('p');
-        messageText.innerHTML = memory.description;
-        kaitMessage.appendChild(messageText);
-        
-        flipCardBack.appendChild(kaitMessage);
-        
-        // Add the button container
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'button-container';
-        
-        const addButton = document.createElement('button');
-        addButton.className = 'add-response-btn';
-        addButton.textContent = 'Favorite memory from this picture';
-        addButton.style.display = 'none'; // Start hidden
-        
-        buttonContainer.appendChild(addButton);
-        flipCardBack.appendChild(buttonContainer);
-        
-        // Add loading indicator
-        const loadingIndicator = document.createElement('div');
-        loadingIndicator.className = 'loading-indicator';
-        loadingIndicator.textContent = 'Loading...';
-        flipCardBack.appendChild(loadingIndicator);
-        
-        // Add response container (hidden initially)
-        const responseContainer = document.createElement('div');
-        responseContainer.className = 'anthony-response-container';
-        responseContainer.style.display = 'none';
-        flipCardBack.appendChild(responseContainer);
-        
-        // Add response form (hidden initially)
-        const responseForm = document.createElement('div');
-        responseForm.className = 'response-form';
-        responseForm.style.display = 'none';
-        
-        const responsePrompt = document.createElement('h4');
-        responsePrompt.textContent = 'Anthony, share your favorite memory from this picture:';
-        responseForm.appendChild(responsePrompt);
-        
-        const textarea = document.createElement('textarea');
-        textarea.className = 'response-textarea';
-        textarea.placeholder = 'Write your favorite memory here...';
-        responseForm.appendChild(textarea);
-        
-        const responseButtons = document.createElement('div');
-        responseButtons.className = 'response-buttons';
-        
-        const saveButton = document.createElement('button');
-        saveButton.className = 'save-response-btn';
-        saveButton.textContent = 'Save';
-        responseButtons.appendChild(saveButton);
-        
-        const cancelButton = document.createElement('button');
-        cancelButton.className = 'cancel-response-btn';
-        cancelButton.textContent = 'Cancel';
-        responseButtons.appendChild(cancelButton);
-        
-        responseForm.appendChild(responseButtons);
-        flipCardBack.appendChild(responseForm);
-        
-        // Assemble the card
-        flipCardInner.appendChild(flipCardFront);
-        flipCardInner.appendChild(flipCardBack);
-        flipCard.appendChild(flipCardInner);
-        
-        // Add to the grid
-        memoryGrid.appendChild(flipCard);
-        
-        // Add click event to flip the card
-        flipCard.addEventListener('click', function(e) {
-            // Don't flip if clicking on buttons, textarea, etc.
-            if (e.target.tagName === 'BUTTON' || 
-                e.target.tagName === 'TEXTAREA' || 
-                e.target.closest('.response-form') || 
-                e.target.closest('.response-buttons')) {
-                return;
-            }
-            
-            // Close other cards
-            document.querySelectorAll('.flip-card.flipped').forEach(card => {
-                if (card !== this) {
-                    card.classList.remove('flipped');
-                }
-            });
-            
-            // Check if we're flipping back to front
-            const isCurrentlyFlipped = this.classList.contains('flipped');
-            
-            // Toggle this card
-            this.classList.toggle('flipped');
-            
-            // If it was flipped and now it's not (meaning we're flipping back to front)
-            if (isCurrentlyFlipped) {
-                // Toggle the image when flipping back to front
-                toggleFrontImage(this);
-            }
-        });
-        
-        // Set up button click events
-        addButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            responseForm.style.display = 'block';
-            addButton.style.display = 'none';
-        });
-        
-        saveButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const responseText = textarea.value;
-            
-            if (responseText.trim() === '') {
-                alert('Please enter a memory before saving.');
-                return;
-            }
-            
-            // Create response object with text and timestamp
-            const responseData = {
-                text: responseText,
-                timestamp: new Date().toISOString()
+const defaultTemplateConfig = {
+    pageTitle: 'Memory Moments Template',
+    headerTitle: 'Memory Moments',
+    subtitle: 'Click a card to reveal the story behind the photo',
+    footerText: 'Create your own memory collection',
+    globalSong: '',
+    memories: [
+        {
+            image: 'https://picsum.photos/900/1200?random=101',
+            title: 'First Milestone',
+            description: 'Add the details of an important moment here. You can include who was there, what happened, and why it matters.',
+            song: ''
+        },
+        {
+            image: 'https://picsum.photos/900/1200?random=102',
+            title: 'Favorite Day',
+            description: 'Describe a favorite day that you want to remember. Keep it short or detailed based on your style.',
+            song: ''
+        },
+        {
+            image: 'https://picsum.photos/900/1200?random=103',
+            title: 'Special Trip',
+            description: 'Capture highlights from a trip, event, or celebration. Add line breaks with <br> if you want formatted text.',
+            song: ''
+        },
+        {
+            image: 'https://picsum.photos/900/1200?random=104',
+            title: 'Shared Lesson',
+            description: 'Write about something meaningful you learned through this memory and why you want to save it.',
+            song: ''
+        },
+        {
+            image: 'https://picsum.photos/900/1200?random=105',
+            title: 'Future Goal',
+            description: 'Use this card for a memory in progress or a future plan you are excited about.',
+            song: ''
+        },
+        {
+            image: 'https://picsum.photos/900/1200?random=106',
+            title: 'Celebration',
+            description: 'Document a celebration or win that deserves a permanent place in your memory timeline.',
+            song: ''
+        }
+    ]
+};
+
+let activeConfig = normalizeConfig(defaultTemplateConfig);
+let activeAudio = null;
+
+function getEditorFeedbackElement() {
+    return document.getElementById('editor-feedback');
+}
+
+function setEditorFeedback(message, type) {
+    const feedback = getEditorFeedbackElement();
+    if (!feedback) {
+        return;
+    }
+
+    feedback.textContent = message || '';
+    feedback.classList.remove('success', 'warning');
+    if (type) {
+        feedback.classList.add(type);
+    }
+}
+
+function deepClone(value) {
+    return JSON.parse(JSON.stringify(value));
+}
+
+function normalizeConfig(rawConfig) {
+    const config = rawConfig || {};
+    const normalizedMemories = Array.isArray(config.memories) ? config.memories : [];
+    return {
+        pageTitle: (config.pageTitle || '').trim() || 'Memory App Template',
+        headerTitle: (config.headerTitle || '').trim() || 'Memory App Template',
+        subtitle: (config.subtitle || '').trim() || 'Click each card to reveal a memory',
+        footerText: (config.footerText || '').trim() || 'Made with love',
+        globalSong: (config.globalSong || '').trim(),
+        memories: normalizedMemories.map(function (memory) {
+            return {
+                image: (memory.image || '').trim(),
+                title: (memory.title || '').trim() || 'Untitled Memory',
+                description: (memory.description || '').trim() || 'Add your memory description here.',
+                song: (memory.song || '').trim()
             };
-            
-            // Save to Firebase
-            memoriesRef.child(index.toString()).set(responseData)
-                .then(() => {
-                    // Update the displayed response
-                    responseContainer.innerHTML = `
-                        <h4>Anthony's Memory:</h4>
-                        <p class="anthony-response">${responseText.replace(/\n/g, '<br>')}</p>
-                        <p class="memory-timestamp">Added on ${formatDate(new Date())}</p>
-                        <button class="edit-response-btn">Edit</button>
-                    `;
-                    
-                    // Show the response and hide the form
-                    responseContainer.style.display = 'block';
-                    responseForm.style.display = 'none';
-                    
-                    // Set up edit button
-                    const editButton = responseContainer.querySelector('.edit-response-btn');
-                    editButton.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        textarea.value = responseText;
-                        responseForm.style.display = 'block';
-                        responseContainer.style.display = 'none';
-                    });
-                })
-                .catch(error => {
-                    console.error("Error saving response:", error);
-                    alert("There was an error saving your memory. Please try again.");
-                });
-        });
-        
-        cancelButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            responseForm.style.display = 'none';
-            
-            // Check if there's a response in Firebase
-            memoriesRef.child(index.toString()).once('value', (snapshot) => {
-                const existingResponse = snapshot.val();
-                
-                if (existingResponse) {
-                    // If there's a response, show the response container
-                    responseContainer.style.display = 'block';
-                } else {
-                    // If no response, show the add button
-                    addButton.style.display = 'inline-block';
-                }
-            });
-        });
-        
-        // Load response from Firebase
-        memoriesRef.child(index.toString()).once('value')
-            .then((snapshot) => {
-                const data = snapshot.val();
-                loadingIndicator.style.display = 'none';
-                
-                if (data) {
-                    // Handle both old format (string) and new format (object with text and timestamp)
-                    const responseText = typeof data === 'string' ? data : data.text;
-                    const timestamp = typeof data === 'string' ? null : data.timestamp;
-                    
-                    // If a response exists, show it
-                    let timestampHtml = '';
-                    if (timestamp) {
-                        timestampHtml = `<p class="memory-timestamp">Added on ${formatDate(new Date(timestamp))}</p>`;
-                    }
-                    
-                    responseContainer.innerHTML = `
-                        <h4>Anthony's Memory:</h4>
-                        <p class="anthony-response">${responseText.replace(/\n/g, '<br>')}</p>
-                        ${timestampHtml}
-                        <button class="edit-response-btn">Edit</button>
-                    `;
-                    responseContainer.style.display = 'block';
-                    
-                    // Set up edit button
-                    const editButton = responseContainer.querySelector('.edit-response-btn');
-                    editButton.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        textarea.value = responseText;
-                        responseForm.style.display = 'block';
-                        responseContainer.style.display = 'none';
-                    });
-                } else {
-                    // If no response, show the add button
-                    addButton.style.display = 'inline-block';
-                }
-            })
-            .catch(error => {
-                console.error("Error loading response:", error);
-                loadingIndicator.style.display = 'none';
-                addButton.style.display = 'inline-block';
-            });
+        }).filter(function (memory) {
+            return memory.image || memory.title || memory.description || memory.song;
+        })
+    };
+}
+
+function loadConfig() {
+    const savedConfig = localStorage.getItem(STORAGE_KEY);
+    if (!savedConfig) {
+        return normalizeConfig(defaultTemplateConfig);
+    }
+
+    try {
+        return normalizeConfig(JSON.parse(savedConfig));
+    } catch (error) {
+        return normalizeConfig(defaultTemplateConfig);
+    }
+}
+
+function saveConfig(config) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+}
+
+function updateTextContent() {
+    document.title = activeConfig.pageTitle;
+    document.getElementById('main-title').textContent = activeConfig.headerTitle;
+    document.getElementById('subtitle').textContent = activeConfig.subtitle;
+    document.getElementById('footer-text').textContent = activeConfig.footerText;
+}
+
+function stopActiveAudio() {
+    if (activeAudio) {
+        activeAudio.pause();
+        activeAudio.currentTime = 0;
+        activeAudio = null;
+    }
+}
+
+function playAudioForMemory(memory) {
+    const songToPlay = memory.song || activeConfig.globalSong;
+    if (!songToPlay) {
+        stopActiveAudio();
+        return;
+    }
+
+    stopActiveAudio();
+    activeAudio = new Audio(songToPlay);
+    activeAudio.play().catch(function () {
+        // Ignore autoplay-related errors; playback requires user gesture in some browsers.
     });
 }
 
-// Function to toggle between the first and second image
-function toggleFrontImage(card) {
-    // Simple approach - just replace the image source
-    const img = card.querySelector('.flip-card-front img');
-    const index = parseInt(card.dataset.index);
-    const memory = memories[index];
-    
-    console.log("Toggling image for card", index);
-    console.log("Current src:", img.src);
-    console.log("First image:", memory.image);
-    console.log("Second image:", memory.secondImage);
-    
-    // If the current src is the first image, switch to second image
-    if (img.src.includes(memory.image)) {
-        console.log("Switching to second image");
-        img.src = memory.secondImage;
-    } else {
-        console.log("Switching to first image");
-        img.src = memory.image;
+function createFlipCards() {
+    const memoryGrid = document.querySelector('.memory-grid');
+    memoryGrid.innerHTML = '';
+
+    if (!activeConfig.memories.length) {
+        const emptyState = document.createElement('p');
+        emptyState.className = 'empty-state';
+        emptyState.textContent = 'No memories yet. Open the template editor to add one.';
+        memoryGrid.appendChild(emptyState);
+        return;
     }
+
+    activeConfig.memories.forEach(function (memory) {
+        const flipCard = document.createElement('div');
+        flipCard.className = 'flip-card';
+        flipCard.innerHTML = [
+            '<div class="flip-card-inner">',
+            '<div class="flip-card-front">',
+            '<img src="' + memory.image + '" alt="' + memory.title + '">',
+            '</div>',
+            '<div class="flip-card-back">',
+            '<h3>' + memory.title + '</h3>',
+            '<p>' + memory.description + '</p>',
+            '</div>',
+            '</div>'
+        ].join('');
+
+        flipCard.addEventListener('click', function () {
+            this.classList.toggle('flipped');
+            playAudioForMemory(memory);
+        });
+
+        memoryGrid.appendChild(flipCard);
+    });
 }
 
-// Format date in a nice readable format
-function formatDate(date) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString(undefined, options);
+function renderMemoryEditorRows() {
+    const list = document.getElementById('memory-editor-list');
+    list.innerHTML = '';
+
+    activeConfig.memories.forEach(function (memory, index) {
+        const item = document.createElement('div');
+        item.className = 'editor-memory-item';
+        item.innerHTML = [
+            '<h3>Memory ' + (index + 1) + '</h3>',
+            '<label>Image filename or URL</label>',
+            '<input type="text" data-field="image" data-index="' + index + '" value="' + memory.image + '">',
+            '<label>Card title</label>',
+            '<input type="text" data-field="title" data-index="' + index + '" value="' + memory.title + '">',
+            '<label>Description (supports <br> for line breaks)</label>',
+            '<textarea data-field="description" data-index="' + index + '" rows="4">' + memory.description + '</textarea>',
+            '<label>Optional song filename or URL (memory-specific)</label>',
+            '<input type="text" data-field="song" data-index="' + index + '" value="' + memory.song + '">',
+            '<p class="editor-row-feedback" data-row-feedback="' + index + '"></p>',
+            '<button type="button" class="danger remove-memory" data-index="' + index + '">Remove Memory</button>'
+        ].join('');
+        list.appendChild(item);
+    });
 }
 
-// Initialize the page
-document.addEventListener('DOMContentLoaded', function() {
+function populateEditor() {
+    document.getElementById('editor-page-title').value = activeConfig.pageTitle;
+    document.getElementById('editor-header-title').value = activeConfig.headerTitle;
+    document.getElementById('editor-subtitle').value = activeConfig.subtitle;
+    document.getElementById('editor-footer-text').value = activeConfig.footerText;
+    document.getElementById('editor-global-song').value = activeConfig.globalSong;
+    renderMemoryEditorRows();
+}
+
+function collectEditorConfig() {
+    const editorMemories = Array.from(document.querySelectorAll('.editor-memory-item')).map(function (item) {
+        return {
+            image: item.querySelector('[data-field="image"]').value.trim(),
+            title: item.querySelector('[data-field="title"]').value.trim(),
+            description: item.querySelector('[data-field="description"]').value.trim(),
+            song: item.querySelector('[data-field="song"]').value.trim()
+        };
+    });
+
+    return normalizeConfig({
+        pageTitle: document.getElementById('editor-page-title').value,
+        headerTitle: document.getElementById('editor-header-title').value,
+        subtitle: document.getElementById('editor-subtitle').value,
+        footerText: document.getElementById('editor-footer-text').value,
+        globalSong: document.getElementById('editor-global-song').value,
+        memories: editorMemories
+    });
+}
+
+function getEditorWarnings(config) {
+    const warnings = [];
+
+    if (!config.memories.length) {
+        warnings.push('No memories were added.');
+    }
+
+    config.memories.forEach(function (memory, index) {
+        const label = 'Memory ' + (index + 1);
+        if (!memory.image) {
+            warnings.push(label + ' is missing an image path.');
+        }
+        if (!memory.title) {
+            warnings.push(label + ' is missing a title.');
+        }
+        if (!memory.description) {
+            warnings.push(label + ' is missing a description.');
+        }
+    });
+
+    return warnings;
+}
+
+function getMemoryRowWarnings(config) {
+    return config.memories.map(function (memory) {
+        const messages = [];
+        if (!memory.image) {
+            messages.push('Add an image path.');
+        }
+        if (!memory.title) {
+            messages.push('Add a title.');
+        }
+        if (!memory.description) {
+            messages.push('Add a description.');
+        }
+        return messages;
+    });
+}
+
+function renderMemoryRowWarnings(config) {
+    const rowWarnings = getMemoryRowWarnings(config);
+    rowWarnings.forEach(function (messages, index) {
+        const feedback = document.querySelector('[data-row-feedback="' + index + '"]');
+        if (!feedback) {
+            return;
+        }
+
+        feedback.textContent = messages.join(' ');
+        feedback.classList.toggle('warning', messages.length > 0);
+    });
+}
+
+function validateEditorLive() {
+    const previewConfig = collectEditorConfig();
+    renderMemoryRowWarnings(previewConfig);
+}
+
+function renderApp() {
+    updateTextContent();
     createFlipCards();
-    
-    // Fix for iOS Safari 100vh issue
-    function fixHeight() {
-        document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    populateEditor();
+    renderMemoryRowWarnings(activeConfig);
+}
+
+function handleEditorActions(event) {
+    const removeButton = event.target.closest('.remove-memory');
+    if (!removeButton) {
+        return;
     }
-    
-    // Run on page load
-    fixHeight();
-    
-    // Run on resize
-    window.addEventListener('resize', fixHeight);
-    window.addEventListener('orientationchange', fixHeight);
-}); 
+
+    const index = Number(removeButton.getAttribute('data-index'));
+    activeConfig.memories.splice(index, 1);
+    renderApp();
+    validateEditorLive();
+}
+
+function addMemory() {
+    activeConfig.memories.push({
+        image: '',
+        title: 'New Memory',
+        description: 'Write your memory here.',
+        song: ''
+    });
+    renderApp();
+    setEditorFeedback('New memory added. Fill in image, title, and description.', 'warning');
+}
+
+function saveFromEditor() {
+    const nextConfig = collectEditorConfig();
+    const warnings = getEditorWarnings(nextConfig);
+    activeConfig = nextConfig;
+    saveConfig(activeConfig);
+    stopActiveAudio();
+    renderApp();
+    renderMemoryRowWarnings(activeConfig);
+
+    if (warnings.length) {
+        setEditorFeedback('Saved with warnings. Please review highlighted memory fields.', 'warning');
+        return;
+    }
+
+    setEditorFeedback('Saved successfully.', 'success');
+}
+
+function resetTemplate() {
+    localStorage.removeItem(STORAGE_KEY);
+    activeConfig = normalizeConfig(deepClone(defaultTemplateConfig));
+    stopActiveAudio();
+    renderApp();
+    setEditorFeedback('Reset to default template.', 'success');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    activeConfig = loadConfig();
+    renderApp();
+
+    document.getElementById('memory-editor-list').addEventListener('click', handleEditorActions);
+    document.getElementById('memory-editor-list').addEventListener('input', validateEditorLive);
+    document.getElementById('add-memory').addEventListener('click', addMemory);
+    document.getElementById('save-template').addEventListener('click', saveFromEditor);
+    document.getElementById('reset-template').addEventListener('click', resetTemplate);
+});

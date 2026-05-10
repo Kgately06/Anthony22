@@ -134,6 +134,136 @@ header {
     animation: fadeIn 1.2s ease-out;
 }
 
+.empty-state {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    background: #ffffff;
+    border-radius: 16px;
+    border: 2px dashed rgba(44, 62, 80, 0.35);
+    padding: 24px;
+}
+
+/* Template Editor */
+.template-editor {
+    max-width: 90%;
+    margin: 0 auto 40px;
+    background: #ffffff;
+    border: 1px solid rgba(44, 62, 80, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.template-editor summary {
+    cursor: pointer;
+    padding: 16px 20px;
+    font-weight: 600;
+    color: var(--primary-color);
+    outline: none;
+}
+
+.editor-content {
+    border-top: 1px solid rgba(44, 62, 80, 0.15);
+    padding: 20px;
+    display: grid;
+    gap: 10px;
+}
+
+.editor-content h2 {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    margin-top: 4px;
+}
+
+.editor-content label {
+    font-size: 0.95rem;
+    color: var(--secondary-color);
+}
+
+.editor-content input,
+.editor-content textarea {
+    width: 100%;
+    border: 1px solid rgba(44, 62, 80, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 0.95rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.editor-content button {
+    border: none;
+    background: var(--primary-color);
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.92rem;
+    cursor: pointer;
+}
+
+.editor-content button.danger {
+    background: #8e1f1f;
+}
+
+.editor-divider {
+    height: 1px;
+    background: rgba(44, 62, 80, 0.15);
+    margin: 8px 0;
+}
+
+.editor-memory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.editor-memory-item {
+    background: #fafafa;
+    border: 1px solid rgba(44, 62, 80, 0.2);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 14px;
+    display: grid;
+    gap: 8px;
+}
+
+.editor-memory-item h3 {
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.editor-row-feedback {
+    min-height: 18px;
+    font-size: 0.84rem;
+    color: transparent;
+}
+
+.editor-row-feedback.warning {
+    color: #8a2f2f;
+}
+
+.editor-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.editor-feedback {
+    min-height: 22px;
+    margin-top: 4px;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+}
+
+.editor-feedback.success {
+    color: #1c6f2e;
+}
+
+.editor-feedback.warning {
+    color: #8a2f2f;
+}
+
 /* Flip Card Styles */
 .flip-card {
     background-color: transparent;
@@ -388,6 +518,10 @@ footer {
     
     .subtitle {
         font-size: 1.6rem;
+    }
+
+    .template-editor {
+        max-width: 95%;
     }
 }
 

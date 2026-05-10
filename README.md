@@ -1,41 +1,78 @@
+# Memory App Template
 
-# Anthony 
+A reusable memory-card web app template you can personalize for any purpose (romantic gift, family memories, birthdays, graduations, friendship highlights, or anything else).
 
-A heartfelt web application created as a personal gift from Kait to Anthony, featuring interactive memory cards that showcase special moments and messages of love and appreciation.
+## What This Template Includes
 
-## About This Project
+- Interactive flip cards with photos on the front and memory text on the back
+- Built-in **Template Editor** (no-code customization in the browser)
+- Direct code-based configuration in `script.js` (for advanced editing)
+- Optional audio support:
+  - one global song for all cards
+  - or an optional song per memory card
+- Local persistence with browser `localStorage` so saved edits survive refresh
 
-This simple yet meaningful web application displays a collection of cherished memories as interactive flip cards. Each card features a photo on the front and reveals a personal message about why Kait loves and appreciates Anthony when flipped.
+## Quick Start
 
-## Features
+1. Put your image files in this project folder.
+2. (Optional) Put audio files in this project folder.
+3. Open `index.html` in a browser.
+4. Click **Open Template Editor** and customize your content.
+5. Click **Save Template**.
 
-- **Interactive Flip Cards**: Click on any card to reveal the heartfelt message behind each photo
-- **Personal Memories**: Six special moments captured in photos with personalized messages
-- **Clean, Elegant Design**: Simple interface that puts the focus on the memories and messages
+## No-Code Customization (Recommended)
 
-## How It Works
+Use the editor in the page to:
 
-The application presents a grid of memory cards. When Anthony clicks on a card, it flips to reveal a title and a personal message from Kait expressing what she loves and appreciates about him.
+- Set browser tab title, heading, subtitle, and footer text
+- Add memory cards
+- Edit image path, card title, and description
+- Add optional song path per memory
+- Set an optional global song
+- Remove memories
+- Save your template
+- Reset back to default content
+- See inline required-field warnings update as you type
 
-## Technical Details
+## Code-Based Customization
 
-This project is built with:
-- HTML5 for structure
-- CSS3 for styling and flip card animations
-- Vanilla JavaScript for dynamic content generation and interactivity
-- Google Fonts (Montserrat and Playfair Display) for typography
+If you prefer editing in code, update `defaultTemplateConfig` in `script.js`.
 
-## Personalization
+Main fields:
 
-This app was created as a personal gift and includes:
-- Real photos from shared memories
-- Customized messages highlighting Anthony's qualities like strength, humor, ambition, support, and thoughtfulness
-- Personal "P.S." notes at the end of each message
+- `pageTitle`
+- `headerTitle`
+- `subtitle`
+- `footerText`
+- `globalSong` (optional)
+- `memories[]` with:
+  - `image`
+  - `title`
+  - `description` (supports `<br>` line breaks)
+  - `song` (optional per memory)
 
-## Viewing the Application
+Note: if you already saved data in the editor, the browser uses saved `localStorage` content first. Use **Reset to Defaults** to return to `defaultTemplateConfig`.
 
-Simply open the `index.html` file in any modern web browser to view and interact with the memory cards.
+## Song Behavior
 
-## Created With Love
+When a card is clicked:
 
-Made with love by Kait ❤️
+- if that memory has its own `song`, it plays
+- otherwise, `globalSong` plays (if set)
+- if neither exists, no audio plays
+
+Each new song selection stops any currently playing track first.
+
+## Media File Guidance
+
+- For local files, use relative names such as `IMG_8835.jpeg` or `song.mp3`.
+- You can also use full URLs for hosted images/audio.
+- Keep filenames exact, including capitalization.
+
+## Tech Stack
+
+- HTML
+- CSS
+- Vanilla JavaScript
+
+No build tools or external backend required.

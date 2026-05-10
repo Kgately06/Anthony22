@@ -2,38 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Anthony</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Moments Template</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1 id="main-title">Anthony</h1>
-            <p class="subtitle">Click each card to reveal why Kait loves and appreciates you.<br>You can also share your favorite memory from each picture!</p>
+            <h1 id="main-title">Memory Moments</h1>
+            <p class="subtitle" id="subtitle">Click a card to reveal the story behind the photo</p>
         </header>
 
-        <div class="music-player-container">
-            <div class="music-player">
-                <div class="music-info">
-                    <div class="song-details">
-                        <h4>New York City</h4>
-                        <p>Chris Bruni</p>
-                    </div>
-                    <p class="music-note">My favorite recent memory: Dancing with you to this song, and feeling like the most beautiful person in the world.</p>
+        <details class="template-editor">
+            <summary>Open Template Editor</summary>
+            <div class="editor-content">
+                <h2>App Settings</h2>
+                <label for="editor-page-title">Browser tab title</label>
+                <input id="editor-page-title" type="text">
+
+                <label for="editor-header-title">Main heading</label>
+                <input id="editor-header-title" type="text">
+
+                <label for="editor-subtitle">Subtitle</label>
+                <input id="editor-subtitle" type="text">
+
+                <label for="editor-footer-text">Footer text</label>
+                <input id="editor-footer-text" type="text">
+
+                <label for="editor-global-song">Global song filename or URL (optional)</label>
+                <input id="editor-global-song" type="text">
+
+                <div class="editor-divider"></div>
+
+                <div class="editor-memory-header">
+                    <h2>Memories</h2>
+                    <button type="button" id="add-memory">Add Memory</button>
                 </div>
-                <div class="player-controls">
-                    <a href="https://music.apple.com/search?term=new%20york%20city%20chris%20bruni" target="_blank" class="stream-btn">
-                        <i class="fab fa-apple"></i> Listen on Apple Music
-                    </a>
+                <div id="memory-editor-list"></div>
+
+                <div class="editor-actions">
+                    <button type="button" id="save-template">Save Template</button>
+                    <button type="button" id="reset-template" class="danger">Reset to Defaults</button>
                 </div>
+                <p id="editor-feedback" class="editor-feedback" aria-live="polite"></p>
             </div>
-        </div>
+        </details>
 
         <div class="memory-grid">
             <!-- Memory cards will be inserted here by JavaScript -->
@@ -41,15 +57,9 @@
     </div>
 
     <footer>
-        <p>Made with love for you ❤️ Kait</p>
+        <p id="footer-text">Create your own memory collection</p>
     </footer>
 
-    <!-- Firebase App (the core Firebase SDK) -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <!-- Firebase Database -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-    
-    <script src="firebase-config.js"></script>
     <script src="script.js"></script>
 </body>
 </html> 
